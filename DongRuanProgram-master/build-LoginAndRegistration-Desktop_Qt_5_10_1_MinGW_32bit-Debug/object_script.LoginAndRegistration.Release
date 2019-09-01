@@ -1,0 +1,17 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\dialog.o
+./release\user.o
+./release\mainwindow_menu.o
+./release\listwidget.o
+./release\database.o
+./release\fileoperator.o
+./release\widget.o
+./release\qrc_ziyuan.o
+./release\moc_mainwindow.o
+./release\moc_dialog.o
+./release\moc_mainwindow_menu.o
+./release\moc_listwidget.o
+./release\moc_widget.o
+);
