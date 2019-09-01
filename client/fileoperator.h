@@ -12,3 +12,4 @@ public:
 };
 
 #endif // FILEOPERATOR_H
+

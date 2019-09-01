@@ -24,19 +24,24 @@ void MainWindow_menu::recUsrname(QString name)
 }*/
 
 
-#include "mainwindow_menu.h".h"
-#include "ui_mainwindow_menu.h".h"
+#include "mainwindow_menu.h"
+#include "ui_mainwindow_menu.h"
+#include "widget.h"
 #include <QToolButton>
 #include <QVector>
 #include <QMessageBox>
 #include <QIcon>
 #include <QPushButton>
 #include <QList>
+#include <QScrollArea>
+#include <QPushButton>
 MainWindow_menu::MainWindow_menu(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow_menu)
 {
     ui->setupUi(this);
+
+
     setWindowTitle("Myself QQ 2019");
     setWindowIcon(QPixmap(":/123.jpg"));
 
@@ -69,21 +74,21 @@ MainWindow_menu::MainWindow_menu(QWidget *parent) :
 
            connect(vToolBtn[ii],&QToolButton::clicked,this,[=]()
            {
-               /*if(isShow[ii])
+               if(isShow[ii])
                {
                    QMessageBox::warning(this,"警告",QString("用户%1窗口已弹出").arg(vToolBtn[ii]->text()));
                    return;
-               }*/
+               }
                isShow[ii]=true;
                //qDebug() <<i;
                //此时，widget的构造函数已经修改，（见4.2步骤）创建widget窗口时，参数1 ：0代表以顶层方式弹出
                //参数2：代表vToolBtn[i]->text()代表告诉聊天窗口 人物的姓名
-              /*MainWindow_menu *chatWidget = new MainWindow_menu(0,vToolBtn[ii]->text());
+              Widget *chatWidget = new Widget(0,vToolBtn[ii]->text());
               chatWidget->setWindowTitle(vToolBtn[ii]->text());
               chatWidget->setWindowIcon(vToolBtn[ii]->icon());
               chatWidget->show();
+              connect(chatWidget,&Widget::widgetClose,this,[=](){isShow[ii]=false;});
 
-              connect(chatWidget,&MainWindow_menu::,this,[=](){isShow[ii]=false;});*/
 
            });
         }

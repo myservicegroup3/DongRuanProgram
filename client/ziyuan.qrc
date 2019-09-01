@@ -4,4 +4,7 @@
         <file>ziyuan/b4e6539c872c1b4db45852da774183b4.png</file>
         <file>ziyuan/HeadImage.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>123.jpg</file>
+    </qresource>
 </RCC>

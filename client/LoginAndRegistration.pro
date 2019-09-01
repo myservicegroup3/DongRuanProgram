@@ -15,23 +15,26 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dialog.cpp \
-    fileoperator.cpp \
     user.cpp \
     mainwindow_menu.cpp \
     listwidget.cpp \
-    database.cpp
+    database.cpp \
+    fileoperator.cpp \
+    widget.cpp
 
 HEADERS  += mainwindow.h \
     dialog.h \
-    fileoperator.h \
     user.h \
     mainwindow_menu.h \
     listwidget.h \
-    database.h
+    database.h \
+    fileoperator.h \
+    widget.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
-    mainwindow_menu.ui
+    mainwindow_menu.ui \
+    widget.ui
 
 RESOURCES += \
     ziyuan.qrc

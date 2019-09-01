@@ -47,7 +47,7 @@
      <attribute name="label">
       <string>好友列表</string>
      </attribute>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="FWidget" native="true">
       <property name="geometry">
        <rect>
         <x>-1</x>
