@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>ziyuan/685574c7d527804795221f165d7c90e9.png</file>
+        <file>ziyuan/b4e6539c872c1b4db45852da774183b4.png</file>
+        <file>ziyuan/HeadImage.png</file>
+    </qresource>
+</RCC>
