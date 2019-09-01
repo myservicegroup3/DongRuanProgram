@@ -1,29 +1,3 @@
-/*#include "mainwindow_menu.h"
-#include "ui_mainwindow_menu.h"
-#include "listwidget.h"
-
-MainWindow_menu::MainWindow_menu(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow_menu)
-{
-    ui->setupUi(this);
-    listwidget_ = new ListWidget(this);
-//    this->setCentralWidget(listwidget_);
-    listwidget_->setGeometry(100, 100, 600, 260);
-}
-
-MainWindow_menu::~MainWindow_menu()
-{
-    delete ui;
-}
-
-void MainWindow_menu::recUsrname(QString name)
-{
-    QString str = QString("欢迎你! %1").arg(name);
-    ui->label->setText(str);
-}*/
-
-
 #include "mainwindow_menu.h"
 #include "ui_mainwindow_menu.h"
 #include "widget.h"
@@ -35,6 +9,7 @@ void MainWindow_menu::recUsrname(QString name)
 #include <QList>
 #include <QScrollArea>
 #include <QPushButton>
+#include <QLineEdit>
 MainWindow_menu::MainWindow_menu(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow_menu)
@@ -44,12 +19,29 @@ MainWindow_menu::MainWindow_menu(QWidget *parent) :
 
     setWindowTitle("Myself QQ 2019");
     setWindowIcon(QPixmap(":/123.jpg"));
-
-    QPushButton* Head1 = new QPushButton(this);
     QIcon ico(":/123.jpg");
-    Head1->setIcon(ico);
-    Head1->setIconSize(QSize(80,80));
-    Head1->setFlat(true);
+    ui->Head1->setIcon(ico);
+    ui->Head1->setIconSize(QSize(80,100));
+
+    ui->UsrName->setStyleSheet("background:transparent;");
+    ui->signEdit->setPlaceholderText("编辑个性签名");
+    ui->FindEdit->setPlaceholderText("输入搜索关键字：");
+
+    ui->Findwidget->setStyleSheet("background-image:url(:/new/prefix2/Picture/backImg.JPG);"
+                                  "}");
+    ui->FindEdit->setStyleSheet("background-color: rgb(255, 255, 255, 0);"
+                                "background:transparent;"
+                                "border-width:0;border-style:outset;"
+                                "");
+    ui->signEdit->setStyleSheet("background-color: rgb(255, 255, 255, 0);"
+                                "background:transparent;"
+                                "border-width:0;border-style:outset;"
+                                "");
+    //QPushButton* Head1 = new QPushButton(this);
+
+    //Head1->setIcon(ico);
+    //
+    //Head1->setFlat(true);
 
     QList<QString>nameList;
         nameList <<"a"<<"b"<<"c"<<"d"<<"e"<<"f"<<"g"
@@ -98,6 +90,12 @@ MainWindow_menu::MainWindow_menu(QWidget *parent) :
            isShow.push_back(false);
        }
 
+       this->setStyleSheet("QToolBox{"
+                           "border: 2px outset gray;"
+                           "border-radius:4px;"
+                           "font:bold 15px;"
+                           "}");
+
 
 }
 
@@ -105,3 +103,17 @@ MainWindow_menu::~MainWindow_menu()
 {
     delete ui;
 }
+
+
+
+
+void MainWindow_menu::on_FindButton_clicked(bool checked)
+{
+
+}
+
+void MainWindow_menu::on_lineEdit_textChanged(const QString &arg1)
+{
+
+}
+

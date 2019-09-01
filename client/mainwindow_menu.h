@@ -4,6 +4,7 @@
 #include <QMainWindow>
 class ListWidget;
 
+
 namespace Ui {
 class MainWindow_menu;
 }
@@ -19,9 +20,12 @@ public:
 private slots:
     //登录成功后接收用户名
     //void recUsrname(QString name);
+    void on_FindButton_clicked(bool checked);
+    void on_lineEdit_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow_menu *ui;
+
 
 };
 

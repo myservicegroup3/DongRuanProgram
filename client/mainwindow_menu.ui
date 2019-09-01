@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>700</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,13 +27,13 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>90</y>
+      <y>120</y>
       <width>281</width>
       <height>561</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <property name="geometry">
@@ -59,7 +59,7 @@
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>-1</x>
+         <x>0</x>
          <y>0</y>
          <width>261</width>
          <height>511</height>
@@ -82,6 +82,92 @@
       <string>群组</string>
      </attribute>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Findwidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>281</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <widget class="QLineEdit" name="signEdit">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>40</y>
+       <width>151</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="UsrName">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>0</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>方正舒体</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>我的ID</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>281</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="hLayout">
+     <item>
+      <widget class="QLineEdit" name="FindEdit">
+       <property name="font">
+        <font>
+         <italic>true</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="FindButton">
+       <property name="text">
+        <string>搜索</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QToolButton" name="Head1">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>71</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

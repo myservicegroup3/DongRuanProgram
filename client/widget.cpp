@@ -26,6 +26,14 @@ Widget::Widget(QWidget *parent,QString usrname) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    this->setStyleSheet("QPushButton{"
+                        "border: 2.5px outset gray;"
+                        "border-radius:6px;"
+                        "font:bold 13px;"
+                        "}");
+ 
+
     this->uName=usrname;
     //udpSocket=new QUdpSocket(this);
     //port=23333;
@@ -228,6 +236,8 @@ Widget::Widget(QWidget *parent,QString usrname) :
         //udpSocket->destroyed();
         QWidget::closeEvent(e);
     }
+
+
 
 
 
