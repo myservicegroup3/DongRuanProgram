@@ -7,25 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>481</width>
-    <height>344</height>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow{
+   <string notr="true">/*QMainWindow{
 	
 	
-	background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), stop:1 rgba(35, 40, 3, 255));
-}</string>
+	border-image:url(:/new/prefix2/Picture/backImg.JPG);
+}*/</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>179</y>
+      <y>200</y>
       <width>181</width>
       <height>31</height>
      </rect>
@@ -46,7 +46,7 @@ background-color: rgb(255, 255, 127);
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>380</x>
       <y>150</y>
       <width>75</width>
       <height>31</height>
@@ -65,8 +65,8 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>182</y>
+      <x>380</x>
+      <y>200</y>
       <width>75</width>
       <height>31</height>
      </rect>
@@ -81,24 +81,11 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
      <string>找回密码</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>200</y>
-      <width>21</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="checkBox">
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>220</y>
+      <y>240</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -114,7 +101,7 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>220</y>
+      <y>240</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -130,7 +117,7 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>250</y>
+      <y>260</y>
       <width>181</width>
       <height>31</height>
      </rect>
@@ -168,30 +155,11 @@ QPushButton{
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>250</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton{
-	
-	border-image: url(:/new/prefix1/ziyuan/685574c7d527804795221f165d7c90e9.png);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>140</y>
+      <x>30</x>
+      <y>150</y>
       <width>81</width>
       <height>81</height>
      </rect>
@@ -218,6 +186,7 @@ border-style:ooutset;
 border-radius:10px;
 padding:6px;
 background-color: rgb(255, 255, 127);
+
 		 
 }</string>
     </property>
@@ -228,36 +197,17 @@ background-color: rgb(255, 255, 127);
       <x>0</x>
       <y>0</y>
       <width>481</width>
-      <height>151</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QLabel{border-image:url(:/new/prefix1/Picture/backImg.JPG);}</string>
     </property>
     <property name="text">
      <string/>
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>481</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

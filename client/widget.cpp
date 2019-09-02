@@ -1,18 +1,3 @@
-/*#include "widget.h"
-#include "ui_widget.h"
-
-Widget::widget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::widget)
-{
-    ui->setupUi(this);
-}
-
-Widget::~widget()
-{
-    delete ui;
-}*/
-
 #include "widget.h"
 #include "ui_widget.h"
 #include <QToolButton>
@@ -21,18 +6,20 @@ Widget::~widget()
 #include <QPushButton>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QStringList>
+#include <QIcon>
+#include <QList>
+#include <QLineEdit>
 Widget::Widget(QWidget *parent,QString usrname) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
 
-    this->setStyleSheet("QPushButton{"
-                        "border: 2.5px outset gray;"
-                        "border-radius:6px;"
-                        "font:bold 13px;"
-                        "}");
- 
+
+
 
     this->uName=usrname;
     //udpSocket=new QUdpSocket(this);
@@ -122,6 +109,9 @@ Widget::Widget(QWidget *parent,QString usrname) :
     connect(ui->clearTBtn,&QToolButton::clicked,[=](){
         ui->msgBrowser->clear();
     });
+
+
+
 }
     void Widget::sndMsg(MsgType type)
     {

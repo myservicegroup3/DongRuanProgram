@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#Widget{background-image:url(:/new/prefix2/Picture/talkDialogBackgroud3.jpg);}</string>
+  </property>
   <widget class="QTextBrowser" name="msgBrowser">
    <property name="geometry">
     <rect>
@@ -164,6 +167,13 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">    this-&gt;setStyleSheet(&quot;QPushButton{&quot;
+                        &quot;border: 2.5px outset gray;&quot;
+                        &quot;border-radius:6px;&quot;
+                        &quot;font:bold 13px;&quot;
+                        &quot;}&quot;);</string>
+   </property>
    <property name="text">
     <string>发送</string>
    </property>
@@ -176,6 +186,13 @@
      <width>75</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">    this-&gt;setStyleSheet(&quot;QPushButton{&quot;
+                        &quot;border: 2.5px outset gray;&quot;
+                        &quot;border-radius:6px;&quot;
+                        &quot;font:bold 13px;&quot;
+                        &quot;}&quot;);</string>
    </property>
    <property name="text">
     <string>退出</string>

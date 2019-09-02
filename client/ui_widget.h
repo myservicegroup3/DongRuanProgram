@@ -47,6 +47,7 @@ public:
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QStringLiteral("Widget"));
         Widget->resize(688, 450);
+        Widget->setStyleSheet(QStringLiteral("#Widget{background-image:url(:/new/prefix2/Picture/talkDialogBackgroud3.jpg);}"));
         msgBrowser = new QTextBrowser(Widget);
         msgBrowser->setObjectName(QStringLiteral("msgBrowser"));
         msgBrowser->setGeometry(QRect(10, 10, 481, 211));
@@ -87,9 +88,19 @@ public:
         sendBtn = new QPushButton(Widget);
         sendBtn->setObjectName(QStringLiteral("sendBtn"));
         sendBtn->setGeometry(QRect(200, 420, 75, 23));
+        sendBtn->setStyleSheet(QLatin1String("    this->setStyleSheet(\"QPushButton{\"\n"
+"                        \"border: 2.5px outset gray;\"\n"
+"                        \"border-radius:6px;\"\n"
+"                        \"font:bold 13px;\"\n"
+"                        \"}\");"));
         exitBtn = new QPushButton(Widget);
         exitBtn->setObjectName(QStringLiteral("exitBtn"));
         exitBtn->setGeometry(QRect(330, 420, 75, 23));
+        exitBtn->setStyleSheet(QLatin1String("    this->setStyleSheet(\"QPushButton{\"\n"
+"                        \"border: 2.5px outset gray;\"\n"
+"                        \"border-radius:6px;\"\n"
+"                        \"font:bold 13px;\"\n"
+"                        \"}\");"));
         boldTBtn = new QToolButton(Widget);
         boldTBtn->setObjectName(QStringLiteral("boldTBtn"));
         boldTBtn->setGeometry(QRect(220, 230, 33, 32));

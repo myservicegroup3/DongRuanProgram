@@ -3,6 +3,38 @@
         <file>ziyuan/685574c7d527804795221f165d7c90e9.png</file>
         <file>ziyuan/b4e6539c872c1b4db45852da774183b4.png</file>
         <file>ziyuan/HeadImage.png</file>
+        <file>Picture/backImg.JPG</file>
+        <file>Picture/close.png</file>
+        <file>Picture/closeHover.png</file>
+        <file>Picture/closePressed.png</file>
+        <file>Picture/dialogIcon.png</file>
+        <file>Picture/friendListIcon.png</file>
+        <file>Picture/groupChatIcon.png</file>
+        <file>Picture/headIcon.jpg</file>
+        <file>Picture/hideIcon.png</file>
+        <file>Picture/mainBackImg.jpg</file>
+        <file>Picture/maxsizeHoverIcon.png</file>
+        <file>Picture/maxsizeIcon.png</file>
+        <file>Picture/maxsizePressedIcon.png</file>
+        <file>Picture/minisize.png</file>
+        <file>Picture/minisizeHover.png</file>
+        <file>Picture/minisizePressed.png</file>
+        <file>Picture/openIcon.png</file>
+        <file>Picture/restoreHoverIcon.png</file>
+        <file>Picture/restoreIcon.png</file>
+        <file>Picture/restorePressedIcon.png</file>
+        <file>Picture/search.png</file>
+        <file>Picture/softwareIcon.png</file>
+        <file>Picture/softwareIcon0.png</file>
+        <file>Picture/talkDialogBackgroud1.jpg</file>
+        <file>Picture/talkDialogBackgroud2.jpg</file>
+        <file>Picture/talkDialogBackgroud3.jpg</file>
+        <file>Picture/talkDigClose.png</file>
+        <file>Picture/talkDigCloseHover.png</file>
+        <file>Picture/talkDigClosePressed.png</file>
+        <file>Picture/talkDigMinisize.png</file>
+        <file>Picture/talkDigMinisizeHover.png</file>
+        <file>Picture/talkDigMinisizePressed.png</file>
     </qresource>
     <qresource prefix="/">
         <file>123.jpg</file>

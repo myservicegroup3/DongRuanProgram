@@ -25,10 +25,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//QString MainWindow::getNamepwd()
-//{
-
-//}
 
 void MainWindow::on_pushButton_5_clicked()
 {
@@ -68,6 +64,9 @@ void MainWindow::on_pushButton_5_clicked()
     {
         QMessageBox::information(this, "提示", "登入失败！未注册，请先注册", QMessageBox::Ok);
     }
+
+    ui->lineEdit_2->setPlaceholderText("请输入账号");
+    ui->lineEdit->setPlaceholderText("请输入密码");
 
 }
 

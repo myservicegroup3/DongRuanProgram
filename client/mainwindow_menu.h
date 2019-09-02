@@ -20,6 +20,8 @@ public:
 private slots:
     //登录成功后接收用户名
     //void recUsrname(QString name);
+    void onMinisizeBtn();
+    void onCloseBtn();
     void on_FindButton_clicked(bool checked);
     void on_lineEdit_textChanged(const QString &arg1);
 

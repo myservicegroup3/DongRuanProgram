@@ -16,15 +16,12 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBox>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -33,20 +30,16 @@ class Ui_MainWindow_menu
 {
 public:
     QWidget *centralwidget;
-    QToolBox *toolBox;
-    QWidget *page;
-    QWidget *FWidget;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *vLayout;
-    QWidget *page_2;
     QWidget *Findwidget;
     QLineEdit *signEdit;
     QLabel *UsrName;
+    QWidget *horizontalLayoutWidget_2;
+    QHBoxLayout *closeLayout;
+    QToolButton *Head1;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *hLayout;
     QLineEdit *FindEdit;
-    QPushButton *FindButton;
-    QToolButton *Head1;
+    QTabWidget *tableWidget;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -56,45 +49,34 @@ public:
             MainWindow_menu->setObjectName(QStringLiteral("MainWindow_menu"));
         MainWindow_menu->setWindowModality(Qt::NonModal);
         MainWindow_menu->resize(280, 750);
-        MainWindow_menu->setStyleSheet(QLatin1String("QMainWindow{\n"
-"	background-color: rgb(255, 255, 127);\n"
-"	background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), stop:1 rgba(35, 40, 3, 255));\n"
+        MainWindow_menu->setStyleSheet(QLatin1String("#MainWindow_menu{\n"
+"	border-image: url(:/new/prefix2/Picture/talkDialogBackgroud2.jpg);\n"
 "}"));
         centralwidget = new QWidget(MainWindow_menu);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        toolBox = new QToolBox(centralwidget);
-        toolBox->setObjectName(QStringLiteral("toolBox"));
-        toolBox->setGeometry(QRect(0, 120, 281, 561));
-        page = new QWidget();
-        page->setObjectName(QStringLiteral("page"));
-        page->setGeometry(QRect(0, 0, 281, 509));
-        FWidget = new QWidget(page);
-        FWidget->setObjectName(QStringLiteral("FWidget"));
-        FWidget->setGeometry(QRect(-1, -1, 281, 511));
-        verticalLayoutWidget = new QWidget(FWidget);
-        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(0, 0, 261, 511));
-        vLayout = new QVBoxLayout(verticalLayoutWidget);
-        vLayout->setObjectName(QStringLiteral("vLayout"));
-        vLayout->setContentsMargins(0, 0, 0, 0);
-        toolBox->addItem(page, QString::fromUtf8("\345\245\275\345\217\213\345\210\227\350\241\250"));
-        page_2 = new QWidget();
-        page_2->setObjectName(QStringLiteral("page_2"));
-        page_2->setGeometry(QRect(0, 0, 281, 509));
-        toolBox->addItem(page_2, QString::fromUtf8("\347\276\244\347\273\204"));
         Findwidget = new QWidget(centralwidget);
         Findwidget->setObjectName(QStringLiteral("Findwidget"));
         Findwidget->setGeometry(QRect(0, 0, 281, 121));
+        Findwidget->setStyleSheet(QStringLiteral("#Findwidget{border-image:url(:/new/prefix2/Picture/mainBackImg.jpg);}"));
         signEdit = new QLineEdit(Findwidget);
         signEdit->setObjectName(QStringLiteral("signEdit"));
-        signEdit->setGeometry(QRect(100, 40, 151, 20));
+        signEdit->setGeometry(QRect(90, 60, 151, 20));
         UsrName = new QLabel(Findwidget);
         UsrName->setObjectName(QStringLiteral("UsrName"));
-        UsrName->setGeometry(QRect(100, 0, 131, 41));
+        UsrName->setGeometry(QRect(90, 10, 131, 41));
         QFont font;
         font.setFamily(QString::fromUtf8("\346\226\271\346\255\243\350\210\222\344\275\223"));
         font.setPointSize(16);
         UsrName->setFont(font);
+        horizontalLayoutWidget_2 = new QWidget(Findwidget);
+        horizontalLayoutWidget_2->setObjectName(QStringLiteral("horizontalLayoutWidget_2"));
+        horizontalLayoutWidget_2->setGeometry(QRect(210, 0, 71, 31));
+        closeLayout = new QHBoxLayout(horizontalLayoutWidget_2);
+        closeLayout->setObjectName(QStringLiteral("closeLayout"));
+        closeLayout->setContentsMargins(0, 0, 0, 0);
+        Head1 = new QToolButton(Findwidget);
+        Head1->setObjectName(QStringLiteral("Head1"));
+        Head1->setGeometry(QRect(10, 10, 71, 65));
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
         horizontalLayoutWidget->setGeometry(QRect(0, 80, 281, 41));
@@ -109,14 +91,10 @@ public:
 
         hLayout->addWidget(FindEdit);
 
-        FindButton = new QPushButton(horizontalLayoutWidget);
-        FindButton->setObjectName(QStringLiteral("FindButton"));
-
-        hLayout->addWidget(FindButton);
-
-        Head1 = new QToolButton(centralwidget);
-        Head1->setObjectName(QStringLiteral("Head1"));
-        Head1->setGeometry(QRect(0, 0, 71, 65));
+        tableWidget = new QTabWidget(centralwidget);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setGeometry(QRect(0, 120, 291, 591));
+        tableWidget->setStyleSheet(QStringLiteral(""));
         MainWindow_menu->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow_menu);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -128,7 +106,7 @@ public:
 
         retranslateUi(MainWindow_menu);
 
-        toolBox->setCurrentIndex(1);
+        tableWidget->setCurrentIndex(-1);
 
 
         QMetaObject::connectSlotsByName(MainWindow_menu);
@@ -137,13 +115,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow_menu)
     {
         MainWindow_menu->setWindowTitle(QApplication::translate("MainWindow_menu", "MainWindow", nullptr));
-        toolBox->setItemText(toolBox->indexOf(page), QApplication::translate("MainWindow_menu", "\345\245\275\345\217\213\345\210\227\350\241\250", nullptr));
-        toolBox->setItemText(toolBox->indexOf(page_2), QApplication::translate("MainWindow_menu", "\347\276\244\347\273\204", nullptr));
         signEdit->setText(QString());
-        UsrName->setText(QApplication::translate("MainWindow_menu", "\346\210\221\347\232\204ID", nullptr));
-        FindEdit->setText(QString());
-        FindButton->setText(QApplication::translate("MainWindow_menu", "\346\220\234\347\264\242", nullptr));
+        UsrName->setText(QApplication::translate("MainWindow_menu", "\346\210\221\347\232\204\345\220\215\345\255\227", nullptr));
         Head1->setText(QApplication::translate("MainWindow_menu", "...", nullptr));
+        FindEdit->setText(QString());
     } // retranslateUi
 
 };
