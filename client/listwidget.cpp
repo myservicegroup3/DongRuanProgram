@@ -1,4 +1,4 @@
-#include <QMenu>
+﻿#include <QMenu>
 #include <QInputDialog>
 #include <QAction>
 #include <QDebug>
@@ -40,7 +40,7 @@ void ListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 void ListWidget::addListWidgetItem()
 {
-    QString text = QInputDialog::getText(this, "输入框", "请输入学生姓名");
+    QString text = QInputDialog::getText(this, u8"输入框", u8"请输入学生姓名");
 
 //    this->addItem(text);
 

@@ -1,4 +1,4 @@
-#include <QMessageBox>
+﻿#include <QMessageBox>
 #include "dialog.h"
 #include "ui_dialog.h"
 #include "mainwindow.h"
@@ -11,12 +11,12 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-    ui->comboBox->addItem("软件开发工程师");
-    ui->comboBox->addItem("软件产品经理");
-    ui->comboBox->addItem("软件产品销售");
-    ui->comboBox->addItem("网管");
-    ui->comboBox->addItem("软件测试工程师");
-    ui->comboBox->addItem("UI设计师");
+    ui->comboBox->addItem(u8"软件开发工程师");
+    ui->comboBox->addItem(u8"软件产品经理");
+    ui->comboBox->addItem(u8"软件产品销售");
+    ui->comboBox->addItem(u8"网管");
+    ui->comboBox->addItem(u8"软件测试工程师");
+    ui->comboBox->addItem(u8"UI设计师");
 }
 
 Dialog::~Dialog()

@@ -1,4 +1,4 @@
-#include "mainwindow_menu.h"
+﻿#include "mainwindow_menu.h"
 #include "ui_mainwindow_menu.h"
 #include "widget.h"
 #include <QToolButton>
@@ -59,10 +59,10 @@ MainWindow_menu::MainWindow_menu(QWidget *parent) :
 
 
     ui->UsrName->setStyleSheet("background-color: rgb(255, 255, 255, 0);");
-    ui->signEdit->setPlaceholderText("编辑个性签名");
+    ui->signEdit->setPlaceholderText(u8"编辑个性签名");
     ui->signEdit->setFrame(false);
 
-    ui->FindEdit->setPlaceholderText("输入搜索关键字：");
+    ui->FindEdit->setPlaceholderText(u8"输入搜索关键字：");
     ui->FindEdit->setFrame(false);
 
     ui->Findwidget->setAutoFillBackground(true);

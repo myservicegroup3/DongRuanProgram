@@ -1,4 +1,4 @@
-#include "widget.h"
+﻿#include "widget.h"
 #include "ui_widget.h"
 #include <QToolButton>
 #include <QMessageBox>
@@ -123,7 +123,7 @@ Widget::Widget(QWidget *parent,QString usrname) :
         case Msg:
             if(ui->msgTextEdit->toPlainText() == "")
             {
-               QMessageBox::warning(0,"警告","发送内容不能为空",QMessageBox::Ok);
+               QMessageBox::warning(0,u8"警告",u8"发送内容不能为空",QMessageBox::Ok);
                return;
             }
             out  <<getMsg();  //发送的是聊天信息    发送格式   消息类型 + 用户名   + 发送内容

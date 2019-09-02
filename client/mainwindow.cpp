@@ -1,4 +1,4 @@
-#include <QMessageBox>
+﻿#include <QMessageBox>
 #include <QDialog>
 #include <QLineEdit>
 #include "fileoperator.h"
@@ -14,9 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEdit_2->setAlignment(Qt::AlignHCenter);
-    ui->lineEdit_2->setPlaceholderText("用户名");
+    ui->lineEdit_2->setPlaceholderText(u8"用户名");
     ui->lineEdit->setAlignment(Qt::AlignHCenter);
-    ui->lineEdit->setPlaceholderText("密码");
+    ui->lineEdit->setPlaceholderText(u8"密码");
 
 }
 
