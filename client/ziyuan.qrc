@@ -2,7 +2,6 @@
     <qresource prefix="/new/prefix1">
         <file>ziyuan/685574c7d527804795221f165d7c90e9.png</file>
         <file>ziyuan/b4e6539c872c1b4db45852da774183b4.png</file>
-        <file>ziyuan/HeadImage.png</file>
         <file>Picture/backImg.JPG</file>
         <file>Picture/close.png</file>
         <file>Picture/closeHover.png</file>
@@ -35,9 +34,28 @@
         <file>Picture/talkDigMinisize.png</file>
         <file>Picture/talkDigMinisizeHover.png</file>
         <file>Picture/talkDigMinisizePressed.png</file>
+        <file>Picture/sea.jpg</file>
+        <file>Picture/sea2.jpg</file>
+        <file>Picture/sea3.jpg</file>
+        <file>Picture/_bold.png</file>
+        <file>Picture/_changecolor.png</file>
+        <file>Picture/_save.png</file>
+        <file>Picture/_xiahuaxian.png</file>
+        <file>Picture/_clear.png</file>
+        <file>Picture/_italic.png</file>
+        <file>Picture/sea4.jpg</file>
+        <file>Picture/HeadImage.png</file>
     </qresource>
     <qresource prefix="/">
         <file>123.jpg</file>
+        <file>Picture/head2.jpg</file>
+        <file>Picture/head3.jpg</file>
+        <file>Picture/head4.jpg</file>
+        <file>Picture/head5.jpg</file>
+        <file>Picture/head6.jpg</file>
+        <file>Picture/head7.jpg</file>
+        <file>Picture/head8.jpg</file>
+        <file>Picture/head1.jpg</file>
     </qresource>
     <qresource prefix="/new/prefix2">
         <file>Picture/backImg.JPG</file>

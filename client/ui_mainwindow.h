@@ -64,35 +64,83 @@ public:
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(380, 150, 75, 31));
-        pushButton_2->setStyleSheet(QLatin1String("QPushButton:hover{color:rgb(255, 0, 0);\n"
-"background-color: rgb(170, 255, 0);\n"
-"}\n"
-"QPushButton{background-color:rgb(170, 255, 255)}"));
+        pushButton_2->setStyleSheet(QLatin1String("QPushButton{\n"
+"            color: rgb(255, 255, 255);\n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));\n"
+"            border:1px;\n"
+"            border-radius:5px;\n"
+"            padding:2px 4px;  \n"
+"        }\n"
+"QPushButton:hover{\n"
+"            color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));\n"
+"            border:1px;  \n"
+"            border-radius:5px; \n"
+"            padding:2px 4px; \n"
+"        }        \n"
+"QPushButton:pressed{    \n"
+"            color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  \n"
+"            border:1px;  \n"
+"            border-radius:5px;\n"
+"            padding:2px 4px;\n"
+"}"));
         pushButton_3 = new QPushButton(centralWidget);
         pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
         pushButton_3->setGeometry(QRect(380, 200, 75, 31));
-        pushButton_3->setStyleSheet(QLatin1String("QPushButton:hover{color:rgb(255, 0, 0);\n"
-"background-color: rgb(170, 255, 0);\n"
-"}\n"
-"QPushButton{background-color:rgb(170, 255, 255)}"));
+        pushButton_3->setStyleSheet(QLatin1String("QPushButton{\n"
+"            color: rgb(255, 255, 255);\n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));\n"
+"            border:1px;\n"
+"            border-radius:5px;\n"
+"            padding:2px 4px;  \n"
+"        }\n"
+"QPushButton:hover{\n"
+"            color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));\n"
+"            border:1px;  \n"
+"            border-radius:5px; \n"
+"            padding:2px 4px; \n"
+"        }        \n"
+"QPushButton:pressed{    \n"
+"            color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  \n"
+"            border:1px;  \n"
+"            border-radius:5px;\n"
+"            padding:2px 4px;\n"
+"}"));
         checkBox = new QCheckBox(centralWidget);
         checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(160, 240, 71, 16));
+        checkBox->setGeometry(QRect(160, 240, 91, 16));
         checkBox->setStyleSheet(QStringLiteral("QCheckBox:hover{color:rgb(255, 0, 0)}"));
         checkBox_2 = new QCheckBox(centralWidget);
         checkBox_2->setObjectName(QStringLiteral("checkBox_2"));
-        checkBox_2->setGeometry(QRect(270, 240, 71, 16));
+        checkBox_2->setGeometry(QRect(280, 240, 101, 20));
         checkBox_2->setStyleSheet(QStringLiteral("QCheckBox:hover{color:rgb(255, 0, 0)}"));
         pushButton_5 = new QPushButton(centralWidget);
         pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
         pushButton_5->setGeometry(QRect(160, 260, 181, 31));
-        pushButton_5->setStyleSheet(QLatin1String("QPushButton:hover{color:rgb(255, 0, 0);\n"
-"\n"
-"	background-color: rgb(170, 255, 0);\n"
+        pushButton_5->setStyleSheet(QLatin1String("QPushButton:hover{\n"
+"			color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));\n"
+"            border:1px;  \n"
+"            border-radius:5px; \n"
+"            padding:2px 4px;\n"
 "}\n"
 "QPushButton{\n"
-"	background-color:rgb(170, 255, 255)\n"
+"			color: rgb(255, 255, 255);\n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));\n"
+"            border:1px;\n"
+"            border-radius:5px; \n"
+"            padding:2px 4px;  \n"
 "}\n"
+"QPushButton:pressed{    \n"
+"            color: rgb(255, 255, 255); \n"
+"            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  \n"
+"            border:1px;  \n"
+"            border-radius:5px;\n"
+"            padding:2px 4px; \n"
+"        }\n"
 ""));
         pushButton_6 = new QPushButton(centralWidget);
         pushButton_6->setObjectName(QStringLiteral("pushButton_6"));
@@ -119,7 +167,7 @@ public:
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(0, 0, 481, 141));
-        label_2->setStyleSheet(QStringLiteral("QLabel{border-image:url(:/new/prefix1/Picture/backImg.JPG);}"));
+        label_2->setStyleSheet(QStringLiteral("QLabel{border-image:url(:/new/prefix1/Picture/sea.jpg);}"));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);

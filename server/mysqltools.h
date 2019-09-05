@@ -15,7 +15,7 @@
 int connectMysql();
 void modifyMysql(const char * keys, const char * keysvalues, const char *title, const char *values, const char * tableName);
 void insertMysql(const char * values_str, const char * tableName);
-void deleteLineMysql(const char *keys, const char * tableName);
+void deleteLineMysql(const char *keys, const char * tableName, const char * values);
 char * myitoa(int d);
 MYSQL mysql;
 
@@ -57,6 +57,7 @@ void insertMysql(const char * values_str, const char * tableName)
 {
     char query_str[100];
     sprintf(query_str,"insert into %s %s", tableName, values_str);
+    printf("%s\n",query_str);
     connectMysql();
     int ret = mysql_real_query(&mysql, query_str, strlen(query_str));
     if(0 != ret)
@@ -76,8 +77,10 @@ void insertMysql(const char * values_str, const char * tableName)
 //tableName -- 表名
 void modifyMysql(const char * keys, const char * keysvalues, const char *title, const char *values, const char * tableName)
 {
-    char modify_str[100];
-    sprintf(modify_str,"UPDATE %s SET %s = %s WHERE %s = %s", tableName, title, values, keys, keysvalues);
+    char modify_str[300];
+    printf("%s\n", keysvalues);
+    sprintf(modify_str,"UPDATE %s SET %s = '%s' WHERE %s = '%s'", tableName, title, values, keys, keysvalues);
+    printf("%s\n",modify_str);
     connectMysql();
     int ret = mysql_real_query(&mysql ,modify_str, strlen(modify_str));
     if(0 != ret)
@@ -91,10 +94,11 @@ void modifyMysql(const char * keys, const char * keysvalues, const char *title, 
 
 //根据某个字段值，删除某行的内容
 //keys -- 字段值
-void deleteLineMysql(const char *keys, const char *tableName)
+void deleteLineMysql(const char *keys, const char *tableName, const char *values)
 {
     char deleteLine_str[100];
-    sprintf(deleteLine_str, "delete from %s where name = %s", tableName, keys);
+    sprintf(deleteLine_str, "delete from %s where %s = '%s'", tableName, keys, values);
+    printf("%s\n",deleteLine_str);
     connectMysql();
     int ret = mysql_real_query(&mysql, deleteLine_str, strlen(deleteLine_str));
     if(0 != ret)

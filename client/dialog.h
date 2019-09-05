@@ -1,7 +1,9 @@
-#ifndef DIALOG_H
+﻿#ifndef DIALOG_H
 #define DIALOG_H
 #include <QString>
 #include <QDialog>
+#include <QTcpSocket>
+#include "rules.h"
 
 namespace Ui {
 class Dialog;
@@ -19,13 +21,16 @@ public:
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
+    void readMessages();
 
 signals:
     void send(QString b,QString c);
+
 private:
     Ui::Dialog *ui;
     QString rname;
     QString rpassward;
+    QTcpSocket *tcpClient = new QTcpSocket(this);
 };
 
 #endif // DIALOG_H

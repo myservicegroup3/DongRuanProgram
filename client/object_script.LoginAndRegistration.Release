@@ -8,10 +8,12 @@ INPUT(
 ./release/database.o
 ./release/fileoperator.o
 ./release/widget.o
+./release/message.o
 ./release/qrc_ziyuan.o
 ./release/moc_mainwindow.o
 ./release/moc_dialog.o
 ./release/moc_mainwindow_menu.o
 ./release/moc_listwidget.o
 ./release/moc_widget.o
+./release/moc_message.o
 );

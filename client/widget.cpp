@@ -1,34 +1,21 @@
-﻿#include "widget.h"
+﻿
 #include "ui_widget.h"
-#include <QToolButton>
-#include <QMessageBox>
-#include <QDateTime>
-#include <QPushButton>
-#include <QColorDialog>
-#include <QFileDialog>
-#include <QListWidget>
-#include <QListWidgetItem>
-#include <QStringList>
-#include <QIcon>
-#include <QList>
-#include <QLineEdit>
-Widget::Widget(QWidget *parent,QString usrname) :
+#include "widget.h"
+#include <stdlib.h>
+
+
+Widget::Widget(QWidget *parent,QString id,QString name,QString myname, QString messages,QTcpSocket *sendtcpclient):
     QWidget(parent),
     ui(new Ui::Widget)
 {
+    now_id = id;
+    now_name = name;
+    now_messages = messages;
+    now_myname = myname;
     ui->setupUi(this);
-
-
-
-
-    this->uName=usrname;
-    //udpSocket=new QUdpSocket(this);
-    //port=23333;
-    //udpSocket->bind(port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-    //采用ShareAddress模式(即允许其它的服务连接到相同的地址和端口，特别是用在多客户端监听同一个
-    //服务器端口等时特别有效)，和ReuseAddressHint模式(重新连接服务器)
-    //connect(udpSocket,&QUdpSocket::readyRead,this,&Widget::ReceiveMessage);
-    //sndMsg(UsrEnter);//有新用户加入
+    this->uName=name;
+    ui->inviteEdit->setPlaceholderText(u8"输入邀请至群聊的ID 点击右侧按钮");
+    tcpClient=sendtcpclient;
 
     //发送与退出按钮
     connect(ui->sendBtn,&QPushButton::clicked,this,[=](){
@@ -106,12 +93,12 @@ Widget::Widget(QWidget *parent,QString usrname) :
         }*/
      });
     //清除聊天记录
+    ui->clearTBtn->setStyleSheet("border-image:url(:/new/prefix1/Picture/clear.png)");
     connect(ui->clearTBtn,&QToolButton::clicked,[=](){
         ui->msgBrowser->clear();
     });
 
-
-
+    ui->msgBrowser->append(now_name + ":" + now_messages);
 }
     void Widget::sndMsg(MsgType type)
     {
@@ -138,38 +125,20 @@ Widget::Widget(QWidget *parent,QString usrname) :
         //udpSocket->writeDatagram(data,data.length(),QHostAddress::Broadcast,port);
     }
 
-    void Widget::ReceiveMessage()
+    void Widget::readMessages()
     {
-        QByteArray datagram;
-        //datagram.resize(udpSocket->pendingDatagramSize());
-        //udpSocket->readDatagram(datagram.data(),datagram.size());
-        QDataStream in (&datagram,QIODevice::ReadOnly);
-        int msgType;
-        in >> msgType; //用户类型获取
 
-        QString usrName,msg;  //用户名、信息
-        QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-
-        switch (msgType){
-        case Msg:
-            in >> usrName  >>msg;
-            ui->msgBrowser->setTextColor(Qt::blue);
-            ui->msgBrowser->setCurrentFont(QFont("Times New Roman",12));
-            ui->msgBrowser->append("[ " + usrName + " ]" + time);
-            ui->msgBrowser->append(msg);
-            break;
-        case UsrEnter:
-            in >> usrName ;
-            usrEnter(usrName);
-            break;
-        case UsrLeft:
-            in >> usrName;
-            usrLeft(usrName,time);
-            break;
-        default:
-            break;
-        }
-
+    }
+    void Widget::readifConnect()
+    {
+        QString data = tcpClient->readAll();
+        qDebug() << data;
+        int nops_type_end = data.toStdString().find(split_type_gid);
+        Signal type = (Signal)std::atoi(data.toStdString().substr(0,nops_type_end).c_str());
+        if(type == ConnectSuccess)
+            connecttype = 1;
+        else
+            connecttype = 0;
     }
 
 
@@ -185,6 +154,11 @@ Widget::Widget(QWidget *parent,QString usrname) :
         ui->msgTextEdit->clear();
         ui->msgTextEdit->setFocus();
         return msg;
+    }
+
+    void Widget::receivedata(QString data)
+    {
+        ui->msgBrowser->setText(data);
     }
 
     void Widget::usrEnter(QString usrname)
@@ -236,4 +210,36 @@ Widget::Widget(QWidget *parent,QString usrname) :
 Widget::~Widget()
 {
     delete ui;
+}
+
+void Widget::on_sendBtn_clicked()
+{
+    QString text=ui->msgTextEdit->toPlainText();
+    ui->msgBrowser->append(now_myname + ":" + text);
+    tcpClient->connectToHost(IP,PORT);
+    if(!tcpClient->waitForConnected(10000))
+    {
+        qDebug()<<"the connect is failed!" << endl;
+    }
+    else
+    {
+        QString Type = QString::number((int)NormalMessage);
+        std::string send_str_q = Type.toStdString() + split_type_gid + split_gid_id + now_id.toStdString() + split_id_msg + text.toStdString()+ msg_end;
+        QString send_str = QString::fromStdString(send_str_q);
+        qDebug()<< send_str;
+        int tt;
+        if(tt = tcpClient->write(send_str.toUtf8(),send_str.toUtf8().size()))
+        {
+            qDebug()<<"the write is succeed!" << "tt:" << tt << endl;
+            if(connect(tcpClient,SIGNAL(readyRead()),this,SLOT(readMessages())))
+            {
+                qDebug()<<"\nthe read is succeed!\n";
+            }
+            else
+            {
+                qDebug()<<connecttype;
+                QMessageBox::information(this, u8"提示", u8"发生连接错误", QMessageBox::Ok);
+            }
+        }//发送服务器代码完毕
+    }
 }

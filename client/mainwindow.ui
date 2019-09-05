@@ -53,10 +53,27 @@ background-color: rgb(255, 255, 127);
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton:hover{color:rgb(255, 0, 0);
-background-color: rgb(170, 255, 0);
-}
-QPushButton{background-color:rgb(170, 255, 255)}</string>
+     <string notr="true">QPushButton{
+            color: rgb(255, 255, 255);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));
+            border:1px;
+            border-radius:5px;
+            padding:2px 4px;  
+        }
+QPushButton:hover{
+            color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));
+            border:1px;  
+            border-radius:5px; 
+            padding:2px 4px; 
+        }        
+QPushButton:pressed{    
+            color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  
+            border:1px;  
+            border-radius:5px;
+            padding:2px 4px;
+}</string>
     </property>
     <property name="text">
      <string>注册账号</string>
@@ -72,10 +89,27 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton:hover{color:rgb(255, 0, 0);
-background-color: rgb(170, 255, 0);
-}
-QPushButton{background-color:rgb(170, 255, 255)}</string>
+     <string notr="true">QPushButton{
+            color: rgb(255, 255, 255);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));
+            border:1px;
+            border-radius:5px;
+            padding:2px 4px;  
+        }
+QPushButton:hover{
+            color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));
+            border:1px;  
+            border-radius:5px; 
+            padding:2px 4px; 
+        }        
+QPushButton:pressed{    
+            color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  
+            border:1px;  
+            border-radius:5px;
+            padding:2px 4px;
+}</string>
     </property>
     <property name="text">
      <string>找回密码</string>
@@ -86,7 +120,7 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
      <rect>
       <x>160</x>
       <y>240</y>
-      <width>71</width>
+      <width>91</width>
       <height>16</height>
      </rect>
     </property>
@@ -100,10 +134,10 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
    <widget class="QCheckBox" name="checkBox_2">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>280</x>
       <y>240</y>
-      <width>71</width>
-      <height>16</height>
+      <width>101</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -123,13 +157,27 @@ QPushButton{background-color:rgb(170, 255, 255)}</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton:hover{color:rgb(255, 0, 0);
-
-	background-color: rgb(170, 255, 0);
+     <string notr="true">QPushButton:hover{
+			color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(130,120,226), stop:0.3 rgb(120,130,230), stop:1 rgb(125,140,226));
+            border:1px;  
+            border-radius:5px; 
+            padding:2px 4px;
 }
 QPushButton{
-	background-color:rgb(170, 255, 255)
+			color: rgb(255, 255, 255);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(166,164,208), stop:0.3 rgb(171,152,230), stop:1 rgb(152,140,220));
+            border:1px;
+            border-radius:5px; 
+            padding:2px 4px;  
 }
+QPushButton:pressed{    
+            color: rgb(255, 255, 255); 
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgb(240,156,121), stop:0.3 rgb(220,160,140), stop:1 rgb(230,140,120));  
+            border:1px;  
+            border-radius:5px;
+            padding:2px 4px; 
+        }
 </string>
     </property>
     <property name="text">
@@ -168,7 +216,7 @@ QPushButton{
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="ziyuan.qrc">:/new/prefix1/ziyuan/HeadImage.png</pixmap>
+     <pixmap>:/new/prefix1/ziyuan/HeadImage.png</pixmap>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_2">
@@ -201,7 +249,7 @@ background-color: rgb(255, 255, 127);
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel{border-image:url(:/new/prefix1/Picture/backImg.JPG);}</string>
+     <string notr="true">QLabel{border-image:url(:/new/prefix1/Picture/sea.jpg);}</string>
     </property>
     <property name="text">
      <string/>
@@ -210,8 +258,6 @@ background-color: rgb(255, 255, 127);
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="ziyuan.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

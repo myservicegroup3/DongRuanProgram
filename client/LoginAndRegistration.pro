@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     listwidget.cpp \
     database.cpp \
     fileoperator.cpp \
-    widget.cpp
+    widget.cpp \
+    message.cpp \
+    creategroup.cpp
 
 HEADERS  += mainwindow.h \
     dialog.h \
@@ -29,12 +31,16 @@ HEADERS  += mainwindow.h \
     listwidget.h \
     database.h \
     fileoperator.h \
-    widget.h
+    widget.h \
+    message.h \
+    creategroup.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \
     mainwindow_menu.ui \
-    widget.ui
+    widget.ui \
+    message.ui \
+    creategroup.ui
 
 RESOURCES += \
     ziyuan.qrc

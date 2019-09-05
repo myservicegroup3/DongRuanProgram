@@ -8,10 +8,12 @@ INPUT(
 ./debug/database.o
 ./debug/fileoperator.o
 ./debug/widget.o
+./debug/message.o
 ./debug/qrc_ziyuan.o
 ./debug/moc_mainwindow.o
 ./debug/moc_dialog.o
 ./debug/moc_mainwindow_menu.o
 ./debug/moc_listwidget.o
 ./debug/moc_widget.o
+./debug/moc_message.o
 );

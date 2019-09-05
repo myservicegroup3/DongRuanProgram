@@ -20,8 +20,6 @@
 #include<algorithm>
 #include<random>
 
-#include "mysqltools.h"
-
 #define LOCALIP "192.168.2.233"
 
 const int port = 8888;
@@ -38,8 +36,11 @@ const std::string msg_end = "__MSGED__\0";
 const std::string split_type_id = "#";
 const std::string split_id_pwd = "$";
 const std::string split_id_name = "-";
-const std::string split_client_client = "+";
-const std::string split_key_change = ";";
+const std::string split_client_client = ";";
+const std::string split_key_change = "+";
+
+const std::string split_yourname_friendlist = "&";
+
 /**
  * 未完成： 
  * 如何把密码加密传输
@@ -54,6 +55,17 @@ const std::string split_key_change = ";";
  *						单聊时群号默认为空，系统消息id、群号和消息内容都为空
 */
 
+/* 测试完成的
+ * 好友请求发送
+ * 好友请求接收
+ * 注册登陆
+ * 请求建一个群
+ * 请求获取某个人id或某一个群的资料
+ * 互相发送个人消息
+ * 发送群消息
+ * 同意或拒绝好友请求
+ * 邀请进群
+*/
 
 enum Signal{LogIn,SignUp,BadCLient,Normal,SomeError,UsrInfo,
 	ConnectSuccess,LogInSuccess, WrongPassword,//登陆消息
@@ -134,16 +146,24 @@ inline void ErrorDeal(int judge) {
 }
 
 inline int MRead(std::string & buf, int fd) {
+	std::cout << "Read1...\n";
 	int al_ret = 0, ret = 0;
 	char rd[translate_bytes_max] = { 0 };
 	buf.clear();
 	while (buf.find(msg_end) == std::string::npos) {
+		std::cout << "Reading1...\n";
+		memset(rd, 0, sizeof(rd));
 		ret = read(fd, rd, translate_bytes_max);
-		if (-1 == ret)
+		std::cout << "Reading2...\n";
+		printf("ret %d\n", ret);
+		if (-1 == ret || 0 == ret)
 			return -1;
 		al_ret += ret;
 		buf += rd;
+		printf("buf:%s\n", buf.c_str());
 	}
+	std::cout << "Read2...\n";
+
 	return al_ret;
 }
 
@@ -159,17 +179,23 @@ inline int MWrite(int fd, int signal, int q_id, int id, std::string msg) {
 	if (msg.size())
 		buf += msg;
 	buf += msg_end;
+	
+	buf.resize(translate_bytes_max, '\0');
 
+	printf("write buf : %s\n", buf.c_str());
 	int al_ret = 0, ret = 0;
 	char wt[translate_bytes_max];
 	strcpy(wt,buf.c_str());
-	//wt[buf.size() + 1] = '\x00';
+	
 	while (al_ret < strlen(wt)) {
-		ret = write(fd, wt + al_ret, strlen(wt));
+		printf("2-------------->writing...\n");
+		ret = write(fd, wt + al_ret, strlen(wt) - al_ret);
 		if (-1 == ret)
 			return -1;
 		al_ret += ret;
 	}
+	printf("writed %d char\n",al_ret);
+
 	return 0;
 }
 
@@ -180,8 +206,13 @@ void SubClientThread(int client_no) {//检测消息池里有没有发给自己�
 	int m_id = client[client_no]->id;
 	int fd = client[client_no]->fd;
 	Signal tag = Normal;
-	while (1 && Normal == tag) {
-		while (!messages_pool[m_id].empty() && Normal == tag) {//不空，说明有消息没有传给客户端
+	std::cout << "ClientThrad1.1\n";
+	while ( (Normal == tag) && (-1 != client[client_no]->fd) ) {
+		//sleep(1);
+		//puts("2-------------->detecting");
+		while (!messages_pool[m_id].empty() && (Normal == tag)) {//不空，说明有消息没有传给客户端
+			printf("2:%d-------------->detected\n",m_id);
+
 			Messages* msg = &(messages_pool[m_id][messages_pool[m_id].size() - 1]);
 			//拿到消息后判断关系类型，比如好友请求，别人同意了你的好友请求
 			//或者别人发给你的消息
@@ -191,27 +222,26 @@ void SubClientThread(int client_no) {//检测消息池里有没有发给自己�
 			int send_id = msg->send_id;//谁发的这个消息
 			int group_id = msg->group_id;
 			int ret;
+			printf("2-------------->%d:%d!%d|%s\n", sgnl,group_id,send_id,msg->msg.c_str());
+			printf("2-------------->size of message[me]:%d\n", messages_pool[m_id].size());
 			switch (sgnl) {
 			case NormalMessage:
+				std::cout << "YES\n";
 				break;
 			case FriendRequest://别人发给你的好友请求或拉你进群请求
 				/**
 				 * 判断是否已经关系表中是否已有好友关系
-				 * 判断是否已经在群里
 				 * 如果已有，向消息池写入RequestAgree的消息给send_id
 				*/
 				msg->msg = client[msg->info_request_no]->name;
-				if (count(client_relationship[m_id].begin(), client_relationship[m_id].end(), send_id)
-					|| (-1 != group_id && !count(Group[group_id].begin(), Group[group_id].end(), send_id))) {
-					Messages write_in(msg->recv_id, m_id, RequestAgree, -1, "", group_id);
+				if ((-1 == group_id && count(client_relationship[client_no].begin(), client_relationship[client_no].end(), msg->info_request_no )))
+				{
+					Messages write_in(send_id, m_id, RequestAgree, -1, "", group_id);
 					{
 						std::lock_guard<std::mutex> lock(m_mutex);
-						messages_pool[msg->recv_id].insert(messages_pool[msg->recv_id].begin(), write_in);
-                        //TODO2 数据库新增一条指令
-                        char values[100];
-                        sprintf(values,"values(%d,%d,%d,%d,%s,%d)",msg->recv_id, m_id, RequestAgree, -1, "", group_id);
-                        insertMysql(values, MESSAGES);
+						messages_pool[send_id].insert(messages_pool[send_id].begin(), write_in);
 					}
+					break;
 				}
 				break;
 			case RequestAgree://别人同意了你的好友请求或者是一个拉他进群的请求，或者是建群成功
@@ -235,25 +265,28 @@ void SubClientThread(int client_no) {//检测消息池里有没有发给自己�
 			case GetInfoFailure:
 				break;
 			default:
-				printf("receive unknown_type message from server\n");
+				printf("2-------------->receive unknown_type message from server\n");
 				tag = SomeError;
 				break;
 			}
+			printf("2--------------259>tag : %d\n", tag);
 			if (SomeError != tag) {
 				ret = MWrite(fd, sgnl, group_id, send_id, msg->msg);
-				if (-1 == ret)
+				if (-1 == ret) {
+					std::cout << "2-------------->someerror thread 2\n";
 					tag = SomeError;
+				}
+					
 			}
 			
 			{
 				std::lock_guard<std::mutex> lock(m_mutex);
 				messages_pool[m_id].pop_back();
-                deleteLineMysql(myitoa(m_id), MESSAGES);//TODO2 删除m_id指定的数据库行
 			}
-			
+			//printf("2-------------->tag : %d\n", tag);
 		}//2.while(empty)
 	}//1.while(1 && tag)
-
+	std::cout << "2-------------->join 2\n";
 	return;
 }
 
@@ -263,7 +296,7 @@ void ClientThread(int client_no){
      *一个负责检测消息池里有没有发给自己的新消息
     */
 
-
+	std::cout << "ClientThread1\n";
    std::thread t([client_no](){SubClientThread(client_no);});
 
    fd_set fds;
@@ -271,32 +304,31 @@ void ClientThread(int client_no){
    while(1){
        FD_ZERO(&fds);
        FD_SET(fd,&fds);
-    
-        int ret_select = select(fd+1,&fds,(fd_set *)NULL,(fd_set *)NULL,NULL);
+	   std::cout << "1-------------->select...\n";
+        int ret_select = select(fd+1, (fd_set *)NULL,&fds,(fd_set *)NULL,NULL);
         if(-1 == ret_select){
             close(fd);
 			client_socket[fd].clear();
 			client[client_no]->fd = -1;
-            modifyMysql("id", myitoa(client[client_no]->id), "fd", "-1", USERS);//TODO 修改数据库的值
 			if (t.joinable()) t.join();
             return;
         }
+		std::cout << "1-------------->select successfully\n";
 		std::string buf;
 		int ret = MRead(buf, fd);
 		if (-1 == ret) {
+			std::cout << "join 1\n";
 			client_socket[fd].clear();
 			client[client_no]->fd = -1;
-            modifyMysql("id", myitoa(client[client_no]->id), "fd", "-1", USERS);//TODO 修改数据库的值
 			close(fd);
 			if (t.joinable()) t.join();
 			return;
 		}
-
        //分辨消息类型
-
+		int jump_out = 0;
 		int npos_type_gid = buf.find(split_type_gid), npos_gid_id = buf.find(split_gid_id);
 		int npos_id_msg = buf.find(split_id_msg),npos_msg_end = buf.find(msg_end);
-		std::string msg = buf.substr(npos_id_msg, npos_msg_end);
+		std::string msg = buf.substr(npos_id_msg+1, npos_msg_end - npos_id_msg - 1);
 		int npos_id_key = 0, npos_key_change = 0;
 		std::string change, key;
 		Signal type;
@@ -305,13 +337,14 @@ void ClientThread(int client_no){
 		int send_id = client[client_no]->id;
 
 		int recv_id = 0, group_id = 0;
-		try {recv_id = std::stoi(buf.substr(npos_gid_id, npos_id_msg));	}
+		try {recv_id = std::stoi(buf.substr(npos_gid_id+1, npos_id_msg - npos_gid_id - 1));	}
 		catch(...){recv_id = -1;}
 
-		try {group_id = std::stoi(buf.substr(npos_gid_id, npos_id_msg));}
+		try {group_id = std::stoi(buf.substr(npos_type_gid+1, npos_gid_id - npos_type_gid - 1));}
 		catch (...) {	group_id = -1;}
-		
-		
+		printf("1-------------->ClientThread get msg:%s\n", buf.c_str());
+		printf("1-------------->%d:%d!%d|%s__MSGED__\n", type, group_id,recv_id, msg.c_str());
+
 
         switch(type){
             case RequestAgree://同意别人的好友请求
@@ -319,21 +352,21 @@ void ClientThread(int client_no){
 				if (group_id != -1 && !count(Group[group_id].begin(), Group[group_id].end(),client_no)) {
 					Group[group_id].push_back(client_no);
 				}
+				else {
+					for (int i = 0; i < Client::client_amount; i++) {
+						if (client[i]->id == send_id) {
+							std::lock_guard<std::mutex> lock(m_mutex);
+							client_relationship[client_no].push_back(i);
+							client_relationship[i].push_back(client_no);
+						}
+					}
+				}
 				//通知别人,加入消息池
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					//首先给自己发一个消息来获取id和名字
 					messages_pool[send_id].push_back(Messages(recv_id, send_id, RequestAgree, client_no, "", group_id));//告诉对方这个client_no来获得其他资料
 					messages_pool[recv_id].push_back(Messages(send_id, recv_id, RequestAgree,client_no,"",group_id));//告诉对方这个client_no来获得其他资料
-                    //TODO2 messages新增数据
-                    char values1[100], values2[100];
-                    sprintf(values1,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, RequestAgree, client_no, "", group_id);
-                    sprintf(values2,"values(%d,%d,%d,%d,%s,%d)",send_id, recv_id, RequestAgree, client_no, "", group_id);
-                    insertMysql(values1, MESSAGES);
-                    insertMysql(values2, MESSAGES);
-
-					client_relationship[send_id].push_back(recv_id);
-					client_relationship[recv_id].push_back(send_id);
 				}
                 break;
 
@@ -341,21 +374,13 @@ void ClientThread(int client_no){
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					messages_pool[recv_id].push_back(Messages(send_id, recv_id, RequestRefuse,-1,"",group_id));//告诉对方这个client_no来获得其他资料
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",send_id, recv_id, RequestAgree, -1, "", group_id);
-                    insertMysql(values, MESSAGES);
-                }
+				}
 				break;
             case FriendRequest://请求添加好友或添加好友进群
 				//往消息池写消息
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					messages_pool[recv_id].push_back(Messages(send_id, recv_id, FriendRequest,client_no,"",group_id));
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",send_id, recv_id, FriendRequest, -1, "", group_id);
-                    insertMysql(values, MESSAGES);
 				}
                 break;
             case GroupCreate://请求创建群
@@ -366,25 +391,19 @@ void ClientThread(int client_no){
 				group_id = Client::id_squence++; 
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
-					messages_pool[send_id].push_back(Messages(send_id, send_id,GroupCreateSuccess, client_no, "", group_id));//告诉我这个群创建好了
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",send_id, send_id,GroupCreateSuccess, client_no, "", group_id);
-                    insertMysql(values, MESSAGES);
+					messages_pool[send_id].push_back(Messages(send_id, send_id,RequestAgree, client_no, "", group_id));//告诉我这个群创建好了
 				}
 				Group[group_id].push_back(client_no);
 				
 				break;
             case GroupMessage://发送群消息
+
+				std::cout << "groupmsg\n";
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					for (int i = 0; i < Group[group_id].size(); i++) {
 						recv_id = client[Group[group_id][i]]->id;
 						messages_pool[recv_id].push_back(Messages(send_id, recv_id, NormalMessage, -1, msg,group_id));
-                        //TODO2 messages新增数据
-                        char values[100];
-                        sprintf(values,"values(%d,%d,%d,%d,%s,%d)",send_id, recv_id, NormalMessage, -1, msg.c_str(), group_id);
-                        insertMysql(values, MESSAGES);
 					}
 				}
                 break;//这两个好像也可以合并
@@ -393,58 +412,55 @@ void ClientThread(int client_no){
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					messages_pool[recv_id].push_back(Messages(send_id, recv_id, NormalMessage,-1,msg));
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",send_id, recv_id, NormalMessage,-1, msg.c_str(), -1);
-                    insertMysql(values, MESSAGES);
 				}
                 break;
             case ChangeSet://更改某些设置
 				npos_id_key = buf.find(split_id_msg);
 				npos_key_change = buf.find(split_key_change);
-				change = buf.substr(npos_key_change, npos_msg_end);
-				key = buf.substr(npos_id_key, npos_key_change);
+				change = buf.substr(npos_key_change+1, npos_msg_end - npos_key_change -1);
+				key = buf.substr(npos_id_key+1, npos_key_change - npos_id_key - 1);
 				if (key == "name") {
 					client[client_no]->name = change;
-                    modifyMysql("id", myitoa(client[client_no]->id), "name", change.c_str(), USERS);//TODO 修改数据库的值
 				}
 				else if (key == "pwd") {
 					client[client_no]->pwd = change;
-                    modifyMysql("id", myitoa(client[client_no]->id), "pwd", change.c_str(), USERS);//TODO 修改数据库的值
 					change.clear();
 				}
 				else {
 					messages_pool[send_id].push_back(Messages(recv_id, send_id, ChangeSetFailure));
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, ChangeSetFailure, -1, "", -1);
-                    insertMysql(values, MESSAGES);
 					break;
 				}
 				messages_pool[send_id].push_back(Messages(recv_id, send_id, ChangeSetSuccess,-1,key+split_key_change+change));
-                //TODO2 messages新增数据
-                char values[100];
-                sprintf(values,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, ChangeSetSuccess,-1,(key+split_key_change+change).c_str(),-1);
-                insertMysql(values, MESSAGES);
                 break;
 			case GetInfo://请求获取某个用户或某个群的资料
+				//std::cout << "1-------------->GetInfo\n";
 				if (-1 == group_id) {
 					for (int i = 0; i < Client::client_amount; i++) {
+						//std::cout << "1-------------->GetInfo ing\n";
 						if (recv_id == client[i]->id) {
-							std::lock_guard<std::mutex> lock(m_mutex);
-							messages_pool[recv_id].push_back(Messages(recv_id,send_id, GetInfoSuccess, i));
-                            //TODO2 messages新增数据
-                            char values[100];
-                            sprintf(values,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, GetInfoSuccess, i,"",-1);
-                            insertMysql(values, MESSAGES);
+							//std::cout << "1-------------->find123\n";
+							{
+								std::lock_guard<std::mutex> lock(m_mutex);
+								messages_pool[send_id].push_back(Messages(recv_id, send_id, GetInfoSuccess, i));
+							}
+							//printf("1-------------->size of send_id's msg:%d--->type:%d\n", messages_pool[send_id].size(), messages_pool[send_id][0].type);
+							jump_out = 1;
 							//告诉对方这个client_no来获得其他资料
 							break;
 						}
 					}
+					if (jump_out) {
+						printf("1-------------->not found\n");
+						break;
+					}
 				}
-				else {
-					if (Group.count(group_id))
+				else {//某个群
+					//std::cout << "1-------------->GetInfoGroup\n";
+
+					if (Group.count(group_id))//如果这个群存在
 					{
+						std::cout << "1-------------->FindGroup\n";
+
 						msg.clear();
 						for (int i = 0 ; i < Group[group_id].size(); i++) {
 							msg += std::to_string(client[Group[group_id][i]]->id);
@@ -453,33 +469,30 @@ void ClientThread(int client_no){
 							msg += split_client_client;
 
 						}//把群里的人的id和name给客户端
-						std::lock_guard<std::mutex> lock(m_mutex);
-						messages_pool[send_id].push_back(Messages(recv_id, send_id, GetInfoSuccess,-1,msg,group_id));
-                        //TODO2 messages新增数据
-                        char values[100];
-                        sprintf(values,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, GetInfoSuccess,-1,msg.c_str(),group_id);
-                        insertMysql(values, MESSAGES);
+						//printf("1-------------->msg of the group:%s\n", msg.c_str());
+
+						{
+							std::lock_guard<std::mutex> lock(m_mutex);
+							messages_pool[send_id].push_back(Messages(recv_id, send_id, GetInfoSuccess, -1, msg, group_id));
+						}
 						break;
 					}
 				}
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
 					messages_pool[send_id].push_back(Messages(recv_id, send_id, GetInfoFailure,-1,"",group_id));
-                    //TODO2 messages新增数据
-                    char values[100];
-                    sprintf(values,"values(%d,%d,%d,%d,%s,%d)",recv_id, send_id, GetInfoFailure,-1,"",group_id);
-                    insertMysql(values, MESSAGES);
 				}
 
 				break;
 			default:
-				printf("receive unknown_type message\n");
+				printf("1-------------->receive unknown_type message\n");
 				break;
         }//switch
 
 
    }//while(1)
 
+   return;
 }
 
 
@@ -488,7 +501,6 @@ int LogInOrSignedUp(int fd){
     //接收服务器发来的和客户端有关信息
 	std::string sgn;
 	int len = MRead(sgn, fd);
-    printf("%d,%s\n",sgn.length(),sgn.c_str());
 	if (len == -1)
 		return SomeError;
 
@@ -506,29 +518,32 @@ int LogInOrSignedUp(int fd){
 
 	switch (type) {
 	case SignUp:
-		printf("signUp\n");
-		client[Client::client_amount] = new Client(Client::id_squence,fd,sgn.substr(npos_id_pwd, npos_pwd_end),sgn.substr(npos_type_id, npos_id_pwd));
-        //TODO 数据库新增数据
-        char signUpValues[100];
-        sprintf(signUpValues,"values(%d,%d,%s,%s)",Client::id_squence,fd,sgn.substr(npos_id_pwd, npos_pwd_end).c_str(),sgn.substr(npos_type_id, npos_id_pwd).c_str());
-        insertMysql(signUpValues, USERS);
-
-		ret = MWrite(fd, LogInSuccess, -1, -1, std::to_string(Client::client_amount++));
+		printf("0-------------->signUp\n");
+		client[Client::client_amount] = new Client(Client::id_squence,fd,sgn.substr(npos_id_pwd+1, npos_pwd_end-npos_id_pwd-1),sgn.substr(npos_type_id+1, npos_id_pwd-npos_type_id - 1));
+		ret = MWrite(fd, LogInSuccess, -1, -1, std::to_string(Client::id_squence++));
 		if (-1 == ret) 
 			return SomeError;
-		return LogInSuccess;
+		return -1 * Client::client_amount++;
 	case LogIn:
-		printf("Login\n");
-		try{id = stoi(sgn.substr(npos_type_id, npos_id_pwd));}
-		catch (...) { printf("Login ERROR!,%d,%s\n",client[0]->id,client[0]->pwd.c_str()); return SomeError; }
+		printf("0-------------->Login\n");
+		try{id = stoi(sgn.substr(npos_type_id+1, npos_id_pwd - npos_type_id -1));}
+		catch (...) { return SomeError; }
 		
-		pwd = sgn.substr(npos_id_pwd, sgn.size());
+		pwd = sgn.substr(npos_id_pwd+1, npos_pwd_end - npos_id_pwd - 1);
 		for (int i = 0; i < Client::client_amount; i++) {
 			if (id == client[i]->id) {
 				if (pwd == client[i]->pwd) {
-					client[i]->fd = fd;
-                    modifyMysql("id", myitoa(client[i]->id), "fd", myitoa(fd), USERS);//TODO 修改数据库的值
-					ret = MWrite(fd, LogInSuccess, -1, -1, "");
+					std::string msg = client[i]->name + split_yourname_friendlist;
+					//发送给客户端该用户有哪些好友
+					printf("friend amount:%d\n", client_relationship[i].size());
+					for (int j = 0;j < client_relationship[i].size(); j++) {
+						msg += std::to_string(client[client_relationship[i][j]]->id);
+						msg += split_id_name;
+						msg += client[client_relationship[i][j]]->name;
+						msg += split_client_client;
+					}
+
+					ret = MWrite(fd, LogInSuccess, -1, -1, msg);
 					if (-1 == ret)
 						break;
 					return -1 * i;//返回client下标
@@ -545,7 +560,7 @@ int LogInOrSignedUp(int fd){
 		return SomeError;
 		break;
 	default:
-		printf("unkown_type message from client while login\n");
+		printf("0-------------->unkown_type message from client while login\n");
 		return SomeError;
 	}    
 }
@@ -591,30 +606,52 @@ int inputClient()
     return 1;
 }
 
-//将数据库的数据加载到messages_pool中
-int inputMessages()
+//将数据库的数据加载到map里
+//mode 1-relationships 2-groups 3-messages
+int inputMap(int mode)
 {
-    connectMysql();
-    int ret = mysql_query(&mysql, "SELECT send_id,recv_id,type,info_request_no,msg,group_id FROM messages");
+	connectMysql();
+	int ret;
+	switch (mode)
+	{
+	case 1:
+		ret = mysql_query(&mysql, "SELECT id,link_id FROM relationships");
+		break;
+	case 2:
+		ret = mysql_query(&mysql, "SELECT group_id,client_id FROM groups");
+		break;
+	case 3:
+		ret = mysql_query(&mysql, "SELECT send_id,recv_id,type,info_request_no,msg,group_id FROM messages");
+		break;
+	
+	default:
+		break;
+	}
 
     if(!ret)
     {
-        MYSQL_RES * message_res = mysql_store_result(&mysql);
-        if(message_res)
+        MYSQL_RES * res = mysql_store_result(&mysql);
+        if(res)
         {
-            int rownum = 0;
-            while(MYSQL_ROW row = mysql_fetch_row(message_res))
+            while(MYSQL_ROW row = mysql_fetch_row(res))
             {
-                Messages write_in(atoi(row[0]),atoi(row[1]),(Signal)atoi(row[2]),atoi(row[3]),row[4],atoi(row[5]));
-                messages_pool[atoi(row[1])].push_back(write_in);//messages_poolinsert
+				if(mode == 1)
+					client_relationship[atoi(row[0])].push_back(atoi(row[1]));
+				else if(mode == 2)
+					Group[atoi(row[0])].push_back(atoi(row[1]));
+				else
+				{
+                	Messages write_in(atoi(row[0]),atoi(row[1]),(Signal)atoi(row[2]),atoi(row[3]),row[4],atoi(row[5]));
+                	messages_pool[atoi(row[1])].push_back(write_in);//messages_poolinsert
+				}
             }//while
-        }//if(user_res)
+        }//if res
         else
         {
             printf("Connect Erro:%d %s\n",mysql_errno(&mysql),mysql_error(&mysql));//返回错误代码、错误消息
                 return -1;
         }
-        mysql_free_result(message_res);
+        mysql_free_result(res);
         mysql_close(&mysql);
     }//if(!ret)
     else
@@ -622,22 +659,51 @@ int inputMessages()
         printf("Connect Erro:%d %s\n",mysql_errno(&mysql),mysql_error(&mysql));//返回错误代码、错误消息
         return -1;
     }
-    printf("input Messages_pool success!\n");
+	char result[100];
+	switch (mode)
+	{
+	case 1:
+		sprintf(result,"relationships");
+		break;
+	case 2:
+		sprintf(result,"groups");
+		break;
+	case 3:
+		sprintf(result,"messages");
+		break;
+	
+	default:
+		break;
+	}
+    printf("input %s is successd!\n", result);
     return 1;
 }
 
-int main(){
-
-    //加载users数据库到*Client[]
+int main(void){
+	srand(time(NULL));
+	Client::id_squence = rand()%100000;
+	//加载users数据库到*Client[]
     if(!inputClient())
     {
         printf("inputClient ERROR!\n");
     }
-    //加载messages数据库到messages_pool
-    if(!inputMap(3))
-    {
-        printf("inputMessages ERROR!\n");
-    }
+    //加载数据库到map
+	for(int i = 1; i<=3; i++)
+		if(!inputMap(i))
+			printf("inputMap %d ERROR!\n", i);
+	
+	// 新建两个客户端
+	// 新建两个客户端
+
+	client[Client::client_amount++] = new Client(123, -1, "password", "Bob");
+	//printf("0--------------->bob id %d\n", client[0]->id);
+	client[Client::client_amount++] = new Client(223, -1, "password", "Cindy");
+	client[Client::client_amount++] = new Client(333, -1, "password", "David");
+	client_relationship[0].push_back(1);
+	client_relationship[1].push_back(0);
+	Group[998877].push_back(0);
+	Group[998877].push_back(1);
+	Group[998877].push_back(2);
 
     //创建套接字
     int listen_fd = socket(AF_INET,SOCK_STREAM,0);
@@ -661,7 +727,7 @@ int main(){
     //Client::client_online = 0;
     int thread_amount = 0;
     while(1){
-        printf("connect ready!\n");
+        printf("0-------------->connect ready!\n");
         //超过容量的处理
         if(Client::client_amount>client_amount_max){
             //do something
@@ -675,26 +741,40 @@ int main(){
 
         //向客户端发送确认信息,告诉客户端你可以开始发送给我id和密码了
         std::string buf;
-		ret = MWrite(fd, ConnectSuccess, -1, -1, " ");
-		if (-1 == ret)
+		ret = MWrite(fd, ConnectSuccess, -1, -1, "");
+		if (-1 == ret) {
+			MWrite(fd, SomeError, -1, -1, "");
+			close(fd);
 			continue;
+
+		}
 
 
         //判断登陆信息
         int connection_info = LogInOrSignedUp(fd);
 		if ( SomeError == connection_info) {
-			printf("client closed or unknowntype message\n");
+			printf("0-------------->client closed or unknowntype message\n");
 			close(fd);
 			continue;
 		}
 		else if (WrongPassword == connection_info) {
-			printf("client gave a wrong password\n");
+			printf("0-------------->client gave a wrong password\n");
 			close(fd);
 			continue;
 		}
 		else { //有新的客户端需要IO处理
 			client_socket[fd].push_back(addr);
-			t[thread_amount++] = std::thread([connection_info]() {ClientThread(-1 * connection_info); });//线程回收后怎么更改这个amount是个问题while(=NULL)?
+			int client_no = -1 * connection_info;
+			if (-1 == client[client_no]->fd) {//账号不在线时登陆
+				client[client_no]->fd = fd;
+				t[thread_amount++] = std::thread([client_no]() {ClientThread(client_no); });
+			}
+			else {
+				close(client[client_no]->fd);
+				client_socket.erase(client[client_no]->fd);
+				client[client_no]->fd = fd;
+				//强制上线
+			}
 		}
     }//1.while(1)
 	close(listen_fd);
